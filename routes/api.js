@@ -22,6 +22,18 @@ module.exports = (app) => {
         res.json(req.body);
     });
 
+    app.delete("/api/notes/:id", function (req, res) {
+        let id = req.params.id;
+        for (i = 0; i < dbData.length; i++) {
+            if (dbData[i].id === id) {
+                res.send(dbData[i]);
+                dbData.splice(i, 1);
+                break;
+            }
+        }
+        writeDB(dbData)
+    });
+
     function writeDB(dbData) {
         dbData = JSON.stringify(dbData)
         fs.writeFileSync("./db/db.json", dbData, function (err) {
